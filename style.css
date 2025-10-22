@@ -6,20 +6,20 @@
 
 body {
     font-family: 'Courier New', monospace;
-    background: linear-gradient(to bottom, #000428, #004e92);
+    background: #1a1a2e;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    color: white;
+    color: #eee;
 }
 
 .game-container {
     text-align: center;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.6);
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .header {
@@ -28,8 +28,7 @@ body {
 
 h1 {
     font-size: 2.5em;
-    color: #00ff00;
-    text-shadow: 0 0 10px #00ff00;
+    color: #4ecca3;
     margin-bottom: 10px;
 }
 
@@ -41,15 +40,14 @@ h1 {
 }
 
 .score-container span {
-    color: #00ffff;
+    color: #eeeeee;
 }
 
 #gameCanvas {
-    border: 2px solid #00ff00;
+    border: 2px solid #4ecca3;
     background: #000;
     display: block;
     margin: 0 auto;
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
 }
 
 .controls {
@@ -58,12 +56,12 @@ h1 {
 
 .controls p {
     margin-bottom: 10px;
-    color: #ffff00;
+    color: #ccc;
 }
 
 button {
-    background: #00ff00;
-    color: #000;
+    background: #4ecca3;
+    color: #1a1a2e;
     border: none;
     padding: 10px 30px;
     font-size: 1.1em;
@@ -71,13 +69,12 @@ button {
     cursor: pointer;
     border-radius: 5px;
     margin: 5px;
-    transition: all 0.3s;
+    transition: 0.2s;
 }
 
 button:hover {
-    background: #00ffff;
+    background: #5fddb4;
     transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
 }
 
 button:active {
@@ -89,10 +86,10 @@ button:active {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(255, 0, 0, 0.9);
+    background: rgba(200, 50, 50, 0.95);
     padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
 }
 
 #gameOver h2 {

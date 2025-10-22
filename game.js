@@ -1,3 +1,4 @@
+// grab canvas and stuff
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const scoreElement = document.getElementById('score');
@@ -7,13 +8,11 @@ const gameOverElement = document.getElementById('gameOver');
 const startButton = document.getElementById('startButton');
 const restartButton = document.getElementById('restartButton');
 
-// Game state
 let gameRunning = false;
 let score = 0;
 let lives = 3;
 let animationId;
 
-// Player
 const player = {
     x: canvas.width / 2 - 20,
     y: canvas.height - 60,
@@ -23,13 +22,11 @@ const player = {
     dx: 0
 };
 
-// Bullets
 let bullets = [];
 const bulletSpeed = 7;
 const bulletWidth = 4;
 const bulletHeight = 15;
 
-// Enemies
 let enemies = [];
 const enemyRows = 4;
 const enemyCols = 8;
@@ -42,15 +39,13 @@ let enemySpeed = 1;
 let enemyDirection = 1;
 let enemyDropDistance = 20;
 
-// Enemy bullets
+// enemy fire
 let enemyBullets = [];
 const enemyBulletSpeed = 3;
-const enemyShootChance = 0.001;
+const enemyShootChance = 0.001; // tweak this if too hard/easy
 
-// Keyboard state
 const keys = {};
 
-// Initialize enemies
 function createEnemies() {
     enemies = [];
     for (let row = 0; row < enemyRows; row++) {
@@ -66,26 +61,21 @@ function createEnemies() {
     }
 }
 
-// Draw player
 function drawPlayer() {
     ctx.fillStyle = '#00ff00';
     ctx.fillRect(player.x, player.y, player.width, player.height);
-
-    // Draw ship details
+    // ship cockpit
     ctx.fillStyle = '#00ffff';
     ctx.fillRect(player.x + 15, player.y - 10, 10, 10);
     ctx.fillRect(player.x, player.y + 35, 10, 5);
     ctx.fillRect(player.x + 30, player.y + 35, 10, 5);
 }
 
-// Draw enemies
 function drawEnemies() {
     enemies.forEach(enemy => {
         if (enemy.alive) {
             ctx.fillStyle = '#ff0000';
             ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
-
-            // Draw enemy details
             ctx.fillStyle = '#ff00ff';
             ctx.fillRect(enemy.x + 5, enemy.y + 5, 8, 8);
             ctx.fillRect(enemy.x + 22, enemy.y + 5, 8, 8);
@@ -94,7 +84,6 @@ function drawEnemies() {
     });
 }
 
-// Draw bullets
 function drawBullets() {
     ctx.fillStyle = '#ffff00';
     bullets.forEach(bullet => {
@@ -107,33 +96,25 @@ function drawBullets() {
     });
 }
 
-// Update player position
 function updatePlayer() {
     player.x += player.dx;
-
-    // Boundary detection
     if (player.x < 0) player.x = 0;
     if (player.x + player.width > canvas.width) {
         player.x = canvas.width - player.width;
     }
 }
 
-// Update bullets
 function updateBullets() {
-    // Player bullets
     bullets = bullets.filter(bullet => {
         bullet.y -= bulletSpeed;
         return bullet.y > 0;
     });
-
-    // Enemy bullets
     enemyBullets = enemyBullets.filter(bullet => {
         bullet.y += enemyBulletSpeed;
         return bullet.y < canvas.height;
     });
 }
 
-// Update enemies
 function updateEnemies() {
     let hitEdge = false;
 
@@ -145,7 +126,6 @@ function updateEnemies() {
                 hitEdge = true;
             }
 
-            // Random shooting
             if (Math.random() < enemyShootChance) {
                 enemyBullets.push({
                     x: enemy.x + enemy.width / 2 - bulletWidth / 2,
@@ -155,6 +135,7 @@ function updateEnemies() {
         }
     });
 
+    // move down and reverse when hit edge
     if (hitEdge) {
         enemyDirection *= -1;
         enemies.forEach(enemy => {
@@ -165,9 +146,8 @@ function updateEnemies() {
     }
 }
 
-// Check collisions
 function checkCollisions() {
-    // Player bullets hitting enemies
+    // check hits on enemies
     bullets.forEach((bullet, bulletIndex) => {
         enemies.forEach((enemy, enemyIndex) => {
             if (enemy.alive &&
@@ -181,15 +161,13 @@ function checkCollisions() {
                 score += 10;
                 scoreElement.textContent = score;
 
-                // Increase difficulty
                 if (score % 100 === 0) {
-                    enemySpeed += 0.5;
+                    enemySpeed += 0.5; // gets harder
                 }
             }
         });
     });
 
-    // Enemy bullets hitting player
     enemyBullets.forEach((bullet, bulletIndex) => {
         if (bullet.x < player.x + player.width &&
             bullet.x + bulletWidth > player.x &&
@@ -201,20 +179,17 @@ function checkCollisions() {
         }
     });
 
-    // Check if enemies reached player
     enemies.forEach(enemy => {
         if (enemy.alive && enemy.y + enemy.height >= player.y) {
             gameOver();
         }
     });
 
-    // Check if all enemies defeated
     if (enemies.every(enemy => !enemy.alive)) {
         nextWave();
     }
 }
 
-// Lose a life
 function loseLife() {
     lives--;
     livesElement.textContent = lives;
@@ -222,13 +197,11 @@ function loseLife() {
     if (lives <= 0) {
         gameOver();
     } else {
-        // Reset player position
         player.x = canvas.width / 2 - 20;
         enemyBullets = [];
     }
 }
 
-// Next wave
 function nextWave() {
     createEnemies();
     enemySpeed += 0.5;
@@ -236,7 +209,6 @@ function nextWave() {
     enemyBullets = [];
 }
 
-// Game over
 function gameOver() {
     gameRunning = false;
     gameOverElement.style.display = 'block';
@@ -246,13 +218,12 @@ function gameOver() {
     cancelAnimationFrame(animationId);
 }
 
-// Clear canvas
 function clear() {
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-// Draw stars background
+// TODO: make stars move for parallax effect?
 function drawStars() {
     ctx.fillStyle = '#fff';
     for (let i = 0; i < 50; i++) {
@@ -263,7 +234,6 @@ function drawStars() {
     }
 }
 
-// Game loop
 function gameLoop() {
     if (!gameRunning) return;
 
@@ -282,20 +252,10 @@ function gameLoop() {
     animationId = requestAnimationFrame(gameLoop);
 }
 
-// Move player
-function moveLeft() {
-    player.dx = -player.speed;
-}
+const moveLeft = () => player.dx = -player.speed;
+const moveRight = () => player.dx = player.speed;
+const stopMoving = () => player.dx = 0;
 
-function moveRight() {
-    player.dx = player.speed;
-}
-
-function stopMoving() {
-    player.dx = 0;
-}
-
-// Shoot
 function shoot() {
     bullets.push({
         x: player.x + player.width / 2 - bulletWidth / 2,
@@ -303,7 +263,6 @@ function shoot() {
     });
 }
 
-// Keyboard controls
 document.addEventListener('keydown', (e) => {
     if (!gameRunning) return;
 
@@ -332,7 +291,6 @@ document.addEventListener('keyup', (e) => {
     }
 });
 
-// Start game
 function startGame() {
     gameRunning = true;
     score = 0;
@@ -355,7 +313,7 @@ function startGame() {
 startButton.addEventListener('click', startGame);
 restartButton.addEventListener('click', startGame);
 
-// Draw initial screen
+// initial screen
 clear();
 drawStars();
 ctx.fillStyle = '#00ff00';
