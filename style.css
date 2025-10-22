@@ -37,10 +37,29 @@ h1 {
     justify-content: space-around;
     font-size: 1.2em;
     margin-bottom: 10px;
+    gap: 20px;
 }
 
-.score-container span {
+.score-container > span {
     color: #eeeeee;
+    background: rgba(78, 204, 163, 0.2);
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: 2px solid rgba(78, 204, 163, 0.4);
+    box-shadow: 0 2px 8px rgba(78, 204, 163, 0.15);
+    transition: all 0.3s ease;
+}
+
+.score-container > span:hover {
+    background: rgba(78, 204, 163, 0.3);
+    border-color: rgba(78, 204, 163, 0.6);
+    box-shadow: 0 4px 12px rgba(78, 204, 163, 0.25);
+}
+
+.score-container #score,
+.score-container #lives {
+    color: #4ecca3;
+    font-weight: bold;
 }
 
 #gameCanvas {
