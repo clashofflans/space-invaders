@@ -49,9 +49,15 @@ let blasterSound;
 let tieFighterSound;
 let audioInitialized = false;
 
-// Initialize audio and load sound effects
+// Detect iOS devices
+function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+           (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+// Initialize audio and load sound effects (disabled on iOS)
 function initAudio() {
-    if (audioInitialized) return;
+    if (audioInitialized || isIOS()) return;
     
     try {
         loadBlasterSound();
@@ -64,6 +70,8 @@ function initAudio() {
 
 // Load the blaster sound file using HTML5 Audio
 function loadBlasterSound() {
+    if (isIOS()) return;
+    
     blasterSound = new Audio('blaster-2-81267.mp3');
     blasterSound.volume = 0.5; // Set volume to 50%
     blasterSound.preload = 'auto';
@@ -84,6 +92,8 @@ function loadBlasterSound() {
 
 // Load the TIE fighter sound file using HTML5 Audio
 function loadTieFighterSound() {
+    if (isIOS()) return;
+    
     tieFighterSound = new Audio('tie-fighter-fire-1.mp3');
     tieFighterSound.volume = 0.3; // Set volume to 30% (lower than player blaster)
     tieFighterSound.preload = 'auto';
@@ -102,8 +112,10 @@ function loadTieFighterSound() {
     });
 }
 
-// Enable audio on first user interaction
+// Enable audio on first user interaction (disabled on iOS)
 function enableAudio() {
+    if (isIOS()) return;
+    
     if (!audioInitialized) {
         initAudio();
     }
@@ -132,8 +144,10 @@ function enableAudio() {
     }
 }
 
-// Play blaster sound
+// Play blaster sound (disabled on iOS)
 function playPewSound() {
+    if (isIOS()) return;
+    
     if (!blasterSound) {
         initAudio();
         return;
@@ -150,8 +164,10 @@ function playPewSound() {
     }
 }
 
-// Play TIE fighter sound
+// Play TIE fighter sound (disabled on iOS)
 function playTieFighterSound() {
+    if (isIOS()) return;
+    
     if (!tieFighterSound) {
         initAudio();
         return;
