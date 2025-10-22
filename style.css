@@ -120,6 +120,9 @@ h1 {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     user-select: none;
+    /* iOS specific fixes */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
 }
 
 @media (max-width: 768px) {

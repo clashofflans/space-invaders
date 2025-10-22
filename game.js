@@ -1363,24 +1363,26 @@ if (touchArea) {
     // Touch start
     touchArea.addEventListener('touchstart', (e) => {
         e.preventDefault();
+        e.stopPropagation();
         if (gameRunning) {
             isTouching = true;
             const touch = e.touches[0];
             touchStartX = touch.clientX;
             touchStartY = touch.clientY;
         }
-    });
+    }, { passive: false });
     
     // Touch move (swipe detection)
     touchArea.addEventListener('touchmove', (e) => {
         e.preventDefault();
+        e.stopPropagation();
         if (gameRunning && isTouching) {
             const touch = e.touches[0];
             const deltaX = touch.clientX - touchStartX;
             const deltaY = touch.clientY - touchStartY;
             
             // Only respond to horizontal swipes (ignore vertical scrolling)
-            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 20) {
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 15) {
                 if (deltaX > 0) {
                     moveRight();
                 } else {
@@ -1388,16 +1390,17 @@ if (touchArea) {
                 }
             }
         }
-    });
+    }, { passive: false });
     
     // Touch end
     touchArea.addEventListener('touchend', (e) => {
         e.preventDefault();
+        e.stopPropagation();
         if (gameRunning) {
             isTouching = false;
             stopMoving();
         }
-    });
+    }, { passive: false });
     
     // Mouse events for desktop testing
     touchArea.addEventListener('mousedown', (e) => {
@@ -1433,6 +1436,52 @@ if (touchArea) {
         }
     });
 }
+
+// Add touch controls to canvas as backup for iOS
+canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Canvas touchstart detected, gameRunning:', gameRunning);
+    if (gameRunning) {
+        isTouching = true;
+        const touch = e.touches[0];
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+        console.log('Touch started at:', touchStartX, touchStartY);
+    }
+}, { passive: false });
+
+canvas.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (gameRunning && isTouching) {
+        const touch = e.touches[0];
+        const deltaX = touch.clientX - touchStartX;
+        const deltaY = touch.clientY - touchStartY;
+        
+        console.log('Touch move - deltaX:', deltaX, 'deltaY:', deltaY);
+        
+        // Only respond to horizontal swipes (ignore vertical scrolling)
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 15) {
+            if (deltaX > 0) {
+                console.log('Moving right');
+                moveRight();
+            } else {
+                console.log('Moving left');
+                moveLeft();
+            }
+        }
+    }
+}, { passive: false });
+
+canvas.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (gameRunning) {
+        isTouching = false;
+        stopMoving();
+    }
+}, { passive: false });
 
 // Initialize the game
 initializeGameMode();
