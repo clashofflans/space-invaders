@@ -39,6 +39,10 @@ let autoFireTimer = 0;
 let touchStartX = 0;
 let touchStartY = 0;
 let isTouching = false;
+let lastTouchX = 0;
+let lastTouchY = 0;
+let touchVelocity = 0;
+let smoothingFactor = 0.8;
 
 // Audio for sound effects
 let blasterSound;
@@ -707,10 +711,24 @@ function drawBullets() {
 }
 
 function updatePlayer() {
+    // Apply smooth movement
     player.x += player.dx;
-    if (player.x < 0) player.x = 0;
+    
+    // Apply momentum decay for smoother movement
+    if (Math.abs(player.dx) > 0.1) {
+        player.dx *= 0.95; // Gradual slowdown
+    } else {
+        player.dx = 0; // Stop completely when very slow
+    }
+    
+    // Keep player within bounds
+    if (player.x < 0) {
+        player.x = 0;
+        player.dx = 0; // Stop momentum at edges
+    }
     if (player.x + player.width > canvas.width) {
         player.x = canvas.width - player.width;
+        player.dx = 0; // Stop momentum at edges
     }
 }
 
@@ -1288,6 +1306,22 @@ const moveLeft = () => player.dx = -player.speed;
 const moveRight = () => player.dx = player.speed;
 const stopMoving = () => player.dx = 0;
 
+// Smooth movement functions for touch controls
+const smoothMoveLeft = (intensity = 1) => {
+    player.dx = -player.speed * intensity;
+};
+
+const smoothMoveRight = (intensity = 1) => {
+    player.dx = player.speed * intensity;
+};
+
+const smoothStopMoving = () => {
+    player.dx *= 0.7; // Gradual slowdown instead of instant stop
+    if (Math.abs(player.dx) < 0.1) {
+        player.dx = 0;
+    }
+};
+
 function shoot() {
     bullets.push({
         x: player.x + player.width / 2 - bulletWidth / 2,
@@ -1372,33 +1406,48 @@ if (touchArea) {
         }
     }, { passive: false });
     
-    // Touch move (swipe detection)
+    // Touch move (swipe detection) - Enhanced for smoothness
     touchArea.addEventListener('touchmove', (e) => {
         e.preventDefault();
         e.stopPropagation();
         if (gameRunning && isTouching) {
             const touch = e.touches[0];
-            const deltaX = touch.clientX - touchStartX;
-            const deltaY = touch.clientY - touchStartY;
+            const currentX = touch.clientX;
+            const currentY = touch.clientY;
+            const deltaX = currentX - touchStartX;
+            const deltaY = currentY - touchStartY;
+            
+            // Calculate movement intensity based on distance
+            const distance = Math.abs(deltaX);
+            const intensity = Math.min(distance / 50, 1.5); // Scale intensity up to 1.5x
             
             // Only respond to horizontal swipes (ignore vertical scrolling)
-            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 15) {
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 8) {
                 if (deltaX > 0) {
-                    moveRight();
+                    smoothMoveRight(intensity);
                 } else {
-                    moveLeft();
+                    smoothMoveLeft(intensity);
                 }
             }
+            
+            // Update last position for velocity calculation
+            lastTouchX = currentX;
+            lastTouchY = currentY;
         }
     }, { passive: false });
     
-    // Touch end
+    // Touch end - Smooth stop
     touchArea.addEventListener('touchend', (e) => {
         e.preventDefault();
         e.stopPropagation();
         if (gameRunning) {
             isTouching = false;
-            stopMoving();
+            // Don't stop immediately, let it coast to a stop
+            setTimeout(() => {
+                if (!isTouching) {
+                    smoothStopMoving();
+                }
+            }, 50);
         }
     }, { passive: false });
     
@@ -1441,13 +1490,11 @@ if (touchArea) {
 canvas.addEventListener('touchstart', (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('Canvas touchstart detected, gameRunning:', gameRunning);
     if (gameRunning) {
         isTouching = true;
         const touch = e.touches[0];
         touchStartX = touch.clientX;
         touchStartY = touch.clientY;
-        console.log('Touch started at:', touchStartX, touchStartY);
     }
 }, { passive: false });
 
@@ -1456,21 +1503,27 @@ canvas.addEventListener('touchmove', (e) => {
     e.stopPropagation();
     if (gameRunning && isTouching) {
         const touch = e.touches[0];
-        const deltaX = touch.clientX - touchStartX;
-        const deltaY = touch.clientY - touchStartY;
+        const currentX = touch.clientX;
+        const currentY = touch.clientY;
+        const deltaX = currentX - touchStartX;
+        const deltaY = currentY - touchStartY;
         
-        console.log('Touch move - deltaX:', deltaX, 'deltaY:', deltaY);
+        // Calculate movement intensity based on distance
+        const distance = Math.abs(deltaX);
+        const intensity = Math.min(distance / 50, 1.5);
         
         // Only respond to horizontal swipes (ignore vertical scrolling)
-        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 15) {
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 8) {
             if (deltaX > 0) {
-                console.log('Moving right');
-                moveRight();
+                smoothMoveRight(intensity);
             } else {
-                console.log('Moving left');
-                moveLeft();
+                smoothMoveLeft(intensity);
             }
         }
+        
+        // Update last position for velocity calculation
+        lastTouchX = currentX;
+        lastTouchY = currentY;
     }
 }, { passive: false });
 
@@ -1479,7 +1532,12 @@ canvas.addEventListener('touchend', (e) => {
     e.stopPropagation();
     if (gameRunning) {
         isTouching = false;
-        stopMoving();
+        // Smooth stop with slight delay
+        setTimeout(() => {
+            if (!isTouching) {
+                smoothStopMoving();
+            }
+        }, 50);
     }
 }, { passive: false });
 

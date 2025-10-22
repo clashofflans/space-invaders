@@ -123,6 +123,10 @@ h1 {
     /* iOS specific fixes */
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
+    /* Smooth touch handling */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform;
 }
 
 @media (max-width: 768px) {
