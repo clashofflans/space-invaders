@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Space Invaders">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <title>Space Invaders - Menu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="menu-container">
+        <div class="menu-header">
+            <h1 class="menu-title">SPACE INVADERS</h1>
+            <div class="menu-subtitle">Choose Your Mission</div>
+        </div>
+        
+        <div class="menu-content">
+            <div class="game-mode-selection">
+                <h2>Select Game Mode</h2>
+                <div class="mode-buttons">
+                    <button id="infiniteMode" class="menu-mode-button">
+                        <div class="mode-icon">∞</div>
+                        <div class="mode-title">Infinite Mode</div>
+                        <div class="mode-description">Endless waves of TIE fighters</div>
+                    </button>
+                    <button id="campaignMode" class="menu-mode-button">
+                        <div class="mode-icon">⚔️</div>
+                        <div class="mode-title">Campaign Mode</div>
+                        <div class="mode-description">20 levels with boss battles</div>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="level-selection" id="levelSelection" style="display:none">
+                <h2>Select Level</h2>
+                <div class="level-grid">
+                    <button class="levelButton" data-level="1">Level 1</button>
+                    <button class="levelButton" data-level="2">Level 2</button>
+                    <button class="levelButton" data-level="3">Level 3</button>
+                    <button class="levelButton" data-level="4">Level 4</button>
+                    <button class="levelButton boss-level" data-level="5">Level 5 (Boss)</button>
+                    <button class="levelButton" data-level="6">Level 6</button>
+                    <button class="levelButton" data-level="7">Level 7</button>
+                    <button class="levelButton" data-level="8">Level 8</button>
+                    <button class="levelButton" data-level="9">Level 9</button>
+                    <button class="levelButton boss-level" data-level="10">Level 10 (Boss)</button>
+                    <button class="levelButton" data-level="11">Level 11</button>
+                    <button class="levelButton" data-level="12">Level 12</button>
+                    <button class="levelButton" data-level="13">Level 13</button>
+                    <button class="levelButton" data-level="14">Level 14</button>
+                    <button class="levelButton boss-level" data-level="15">Level 15 (Boss)</button>
+                    <button class="levelButton" data-level="16">Level 16</button>
+                    <button class="levelButton" data-level="17">Level 17</button>
+                    <button class="levelButton" data-level="18">Level 18</button>
+                    <button class="levelButton" data-level="19">Level 19</button>
+                    <button class="levelButton final-boss" data-level="20">Level 20 (Final Boss)</button>
+                </div>
+                <button id="backToModes" class="back-button">Back to Modes</button>
+            </div>
+        </div>
+        
+        <div class="menu-footer">
+            <div class="controls-info">
+                <p class="desktop-text">Use arrow keys to move, space to shoot</p>
+                <p class="mobile-text">Use touch controls to move (auto-fire enabled)</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="menu.js"></script>
+</body>
+</html>

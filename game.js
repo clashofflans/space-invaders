@@ -5,16 +5,16 @@ const scoreElement = document.getElementById('score');
 const livesElement = document.getElementById('lives');
 const finalScoreElement = document.getElementById('finalScore');
 const gameOverElement = document.getElementById('gameOver');
-const startButton = document.getElementById('startButton');
 const restartButton = document.getElementById('restartButton');
-const infiniteModeButton = document.getElementById('infiniteMode');
-const campaignModeButton = document.getElementById('campaignMode');
-const modeSelection = document.getElementById('modeSelection');
-const levelSelection = document.getElementById('levelSelection');
-const backToModesButton = document.getElementById('backToModes');
+const backToMenuButton = document.getElementById('backToMenu');
 const levelDisplay = document.getElementById('levelDisplay');
 const currentLevelElement = document.getElementById('currentLevel');
 const maxLevelElement = document.getElementById('maxLevel');
+
+// Get URL parameters
+const urlParams = new URLSearchParams(window.location.search);
+const gameModeParam = urlParams.get('mode');
+const levelParam = urlParams.get('level');
 
 // Mobile controls
 const touchArea = document.getElementById('touchArea');
@@ -39,7 +39,6 @@ let autoFireTimer = 0;
 let touchStartX = 0;
 let touchStartY = 0;
 let isTouching = false;
-let showStartMessage = false;
 
 // Audio for sound effects
 let blasterSound;
@@ -219,32 +218,26 @@ function updateLevelDisplay() {
     }
 }
 
-function selectInfiniteMode() {
-    gameMode = 'infinite';
-    modeSelection.style.display = 'none';
-    startButton.style.display = 'inline-block';
-    levelDisplay.style.display = 'none';
-    showStartMessage = true;
-    drawStartMessage();
-}
-
-function selectCampaignMode() {
-    gameMode = 'campaign';
-    modeSelection.style.display = 'none';
-    levelSelection.style.display = 'block';
-    showStartMessage = true;
-    drawStartMessage();
-}
-
-function showLevelSelection() {
-    modeSelection.style.display = 'none';
-    levelSelection.style.display = 'block';
-}
-
-function showModeSelection() {
-    levelSelection.style.display = 'none';
-    modeSelection.style.display = 'block';
-    showStartMessage = false;
+// Initialize game mode from URL parameters
+function initializeGameMode() {
+    if (gameModeParam === 'infinite') {
+        gameMode = 'infinite';
+        levelDisplay.style.display = 'none';
+        // Auto-start infinite mode
+        startGame();
+    } else if (gameModeParam === 'campaign') {
+        gameMode = 'campaign';
+        if (levelParam) {
+            // Auto-start specific level
+            startLevel(parseInt(levelParam));
+        } else {
+            // No level specified, redirect to menu
+            window.location.href = 'menu.html';
+        }
+    } else {
+        // No valid mode, redirect to menu
+        window.location.href = 'menu.html';
+    }
 }
 
 function startLevel(level) {
@@ -268,8 +261,6 @@ function startLevel(level) {
     scoreElement.textContent = score;
     livesElement.textContent = lives;
     gameOverElement.style.display = 'none';
-    levelSelection.style.display = 'none';
-    startButton.style.display = 'none';
     restartButton.style.display = 'none';
     
     createEnemies();
@@ -993,7 +984,6 @@ function gameOver() {
     }
     
     restartButton.style.display = 'inline-block';
-    startButton.style.display = 'none';
     cancelAnimationFrame(animationId);
 }
 
@@ -1013,14 +1003,6 @@ function drawStars() {
     }
 }
 
-function drawStartMessage() {
-    if (!showStartMessage) return;
-    
-    ctx.fillStyle = '#00ff00';
-    ctx.font = '30px Courier New';
-    ctx.textAlign = 'center';
-    ctx.fillText('Press Start Game to Play!', canvas.width / 2, canvas.height / 2);
-}
 
 function drawDeathStar() {
     // Death Star position and size (moved to top)
@@ -1365,25 +1347,15 @@ function startGame() {
     scoreElement.textContent = score;
     livesElement.textContent = lives;
     gameOverElement.style.display = 'none';
-    startButton.style.display = 'none';
     restartButton.style.display = 'none';
 
     createEnemies();
     gameLoop();
 }
 
-startButton.addEventListener('click', startGame);
 restartButton.addEventListener('click', startGame);
-infiniteModeButton.addEventListener('click', selectInfiniteMode);
-campaignModeButton.addEventListener('click', selectCampaignMode);
-backToModesButton.addEventListener('click', showModeSelection);
-
-// Add event listeners for level buttons
-document.querySelectorAll('.levelButton').forEach(button => {
-    button.addEventListener('click', () => {
-        const level = parseInt(button.getAttribute('data-level'));
-        startLevel(level);
-    });
+backToMenuButton.addEventListener('click', () => {
+    window.location.href = 'menu.html';
 });
 
 // Mobile touch/swipe controls
@@ -1462,8 +1434,10 @@ if (touchArea) {
     });
 }
 
+// Initialize the game
+initializeGameMode();
+
 // initial screen
 clear();
 drawStars();
 drawDeathStar();
-drawStartMessage();
