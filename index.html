@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Space Invaders</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -17,8 +17,20 @@
             </div>
         </div>
         <canvas id="gameCanvas" width="800" height="600"></canvas>
+        
+        <!-- Mobile Touch Controls -->
+        <div id="mobileControls" class="mobile-controls">
+            <div id="touchArea" class="touch-area">
+                <div class="touch-instructions">
+                    <p>Swipe left/right to move</p>
+                    <p>(Auto-fire enabled)</p>
+                </div>
+            </div>
+        </div>
+        
         <div class="controls">
-            <p>Use arrow keys to move, space to shoot</p>
+            <p class="desktop-text">Use arrow keys to move, space to shoot</p>
+            <p class="mobile-text">Use touch controls below to move (auto-fire enabled)</p>
             <div id="modeSelection">
                 <h3>Choose Game Mode:</h3>
                 <button id="infiniteMode" class="modeButton">Infinite Mode</button>

@@ -12,6 +12,17 @@ body {
     align-items: center;
     min-height: 100vh;
     color: #eee;
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Mobile Detection */
+@media (max-width: 768px) {
+    body {
+        padding: 5px;
+        min-height: 100vh;
+    }
 }
 
 .game-container {
@@ -20,6 +31,18 @@ body {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    max-width: 100%;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .game-container {
+        padding: 10px;
+        border-radius: 4px;
+        width: 100vw;
+        max-width: 100vw;
+        margin: 0;
+    }
 }
 
 .header {
@@ -67,6 +90,17 @@ h1 {
     background: #000;
     display: block;
     margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    #gameCanvas {
+        width: 100%;
+        max-width: 100vw;
+        height: auto;
+        border: 1px solid #4ecca3;
+    }
 }
 
 .controls {
@@ -217,6 +251,111 @@ button:active {
 .backButton:hover {
     background: #777;
     transform: scale(1.05);
+}
+
+/* Mobile Touch Controls */
+.mobile-controls {
+    display: none;
+    margin-top: 20px;
+    padding: 10px;
+}
+
+.touch-area {
+    background: rgba(78, 204, 163, 0.1);
+    border: 2px dashed #4ecca3;
+    border-radius: 15px;
+    padding: 30px;
+    margin: 0 auto;
+    max-width: 90%;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.touch-area:active {
+    background: rgba(78, 204, 163, 0.2);
+    border-color: #5fddb4;
+}
+
+.touch-instructions {
+    text-align: center;
+    color: #4ecca3;
+    font-size: 1.1em;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+.touch-instructions p {
+    margin: 5px 0;
+    font-family: 'Courier New', monospace;
+}
+
+.touch-instructions p:first-child {
+    font-size: 1.2em;
+}
+
+.touch-instructions p:last-child {
+    font-size: 0.9em;
+    color: #87CEEB;
+}
+
+/* Show/hide controls based on screen size */
+@media (max-width: 768px) {
+    .mobile-controls {
+        display: block;
+    }
+    
+    .desktop-text {
+        display: none;
+    }
+    
+    .mobile-text {
+        display: block;
+    }
+}
+
+@media (min-width: 769px) {
+    .mobile-controls {
+        display: none;
+    }
+    
+    .desktop-text {
+        display: block;
+    }
+    
+    .mobile-text {
+        display: none;
+    }
+}
+
+/* Mobile-specific button sizing */
+@media (max-width: 480px) {
+    .modeButton, .levelButton {
+        padding: 15px 20px;
+        font-size: 1.1em;
+        min-width: 150px;
+    }
+    
+    .level-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+    
+    .touch-area {
+        min-height: 100px;
+        padding: 20px;
+    }
+    
+    .touch-instructions {
+        font-size: 1em;
+    }
 }
 
 #gameOver {

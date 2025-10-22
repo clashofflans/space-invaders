@@ -16,6 +16,9 @@ const levelDisplay = document.getElementById('levelDisplay');
 const currentLevelElement = document.getElementById('currentLevel');
 const maxLevelElement = document.getElementById('maxLevel');
 
+// Mobile controls
+const touchArea = document.getElementById('touchArea');
+
 let gameRunning = false;
 let score = 0;
 let lives = 5;
@@ -31,6 +34,11 @@ let maxBossHealth = 0;
 let deathStarExploding = false;
 let explosionTimer = 0;
 let explosionParticles = [];
+let autoFire = false;
+let autoFireTimer = 0;
+let touchStartX = 0;
+let touchStartY = 0;
+let isTouching = false;
 
 const player = {
     x: canvas.width / 2 - 20,
@@ -122,6 +130,9 @@ function startLevel(level) {
     updateDifficulty();
     updateLevelDisplay();
     
+    enableAutoFire(); // Enable auto-fire for mobile
+    autoFireTimer = 0;
+    
     scoreElement.textContent = score;
     livesElement.textContent = lives;
     gameOverElement.style.display = 'none';
@@ -134,6 +145,16 @@ function startLevel(level) {
 }
 
 const keys = {};
+
+// Detect if user is on mobile device
+function isMobileDevice() {
+    return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+// Enable auto-fire for mobile devices
+function enableAutoFire() {
+    autoFire = isMobileDevice();
+}
 
 function createEnemies() {
     enemies = [];
@@ -1116,12 +1137,21 @@ function gameLoop() {
     updateBullets();
     updateEnemies();
     checkCollisions();
+    
+    // Auto-fire for mobile devices
+    if (autoFire) {
+        autoFireTimer++;
+        if (autoFireTimer >= 10) { // Fire every 10 frames (6 times per second)
+            shoot();
+            autoFireTimer = 0;
+        }
+    }
 
     drawPlayer();
     if (isBossLevel) {
         drawBoss();
     } else {
-    drawEnemies();
+        drawEnemies();
     }
     drawBullets();
 
@@ -1182,6 +1212,9 @@ function startGame() {
         updateLevelDisplay();
     }
 
+    enableAutoFire(); // Enable auto-fire for mobile
+    autoFireTimer = 0;
+
     scoreElement.textContent = score;
     livesElement.textContent = lives;
     gameOverElement.style.display = 'none';
@@ -1205,6 +1238,82 @@ document.querySelectorAll('.levelButton').forEach(button => {
         startLevel(level);
     });
 });
+
+// Mobile touch/swipe controls
+if (touchArea) {
+    // Touch start
+    touchArea.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (gameRunning) {
+            isTouching = true;
+            const touch = e.touches[0];
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+        }
+    });
+    
+    // Touch move (swipe detection)
+    touchArea.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        if (gameRunning && isTouching) {
+            const touch = e.touches[0];
+            const deltaX = touch.clientX - touchStartX;
+            const deltaY = touch.clientY - touchStartY;
+            
+            // Only respond to horizontal swipes (ignore vertical scrolling)
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 20) {
+                if (deltaX > 0) {
+                    moveRight();
+                } else {
+                    moveLeft();
+                }
+            }
+        }
+    });
+    
+    // Touch end
+    touchArea.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        if (gameRunning) {
+            isTouching = false;
+            stopMoving();
+        }
+    });
+    
+    // Mouse events for desktop testing
+    touchArea.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        if (gameRunning) {
+            isTouching = true;
+            touchStartX = e.clientX;
+            touchStartY = e.clientY;
+        }
+    });
+    
+    touchArea.addEventListener('mousemove', (e) => {
+        e.preventDefault();
+        if (gameRunning && isTouching) {
+            const deltaX = e.clientX - touchStartX;
+            const deltaY = e.clientY - touchStartY;
+            
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 20) {
+                if (deltaX > 0) {
+                    moveRight();
+                } else {
+                    moveLeft();
+                }
+            }
+        }
+    });
+    
+    touchArea.addEventListener('mouseup', (e) => {
+        e.preventDefault();
+        if (gameRunning) {
+            isTouching = false;
+            stopMoving();
+        }
+    });
+}
 
 // initial screen
 clear();
