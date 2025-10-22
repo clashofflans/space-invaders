@@ -40,6 +40,130 @@ let touchStartX = 0;
 let touchStartY = 0;
 let isTouching = false;
 
+// Audio for sound effects
+let blasterSound;
+let tieFighterSound;
+let audioInitialized = false;
+
+// Initialize audio and load sound effects
+function initAudio() {
+    if (audioInitialized) return;
+    
+    try {
+        loadBlasterSound();
+        loadTieFighterSound();
+        audioInitialized = true;
+    } catch (e) {
+        console.log('Audio not supported:', e);
+    }
+}
+
+// Load the blaster sound file using HTML5 Audio
+function loadBlasterSound() {
+    blasterSound = new Audio('blaster-2-81267.mp3');
+    blasterSound.volume = 0.5; // Set volume to 50%
+    blasterSound.preload = 'auto';
+    
+    // Add error handling
+    blasterSound.addEventListener('error', function(e) {
+        console.log('Error loading blaster audio file:', e);
+        // Create a fallback silent audio if the file fails to load
+        blasterSound = new Audio();
+        blasterSound.volume = 0;
+    });
+    
+    // Add load event listener
+    blasterSound.addEventListener('canplaythrough', function() {
+        console.log('Blaster audio loaded successfully');
+    });
+}
+
+// Load the TIE fighter sound file using HTML5 Audio
+function loadTieFighterSound() {
+    tieFighterSound = new Audio('tie-fighter-fire-1.mp3');
+    tieFighterSound.volume = 0.3; // Set volume to 30% (lower than player blaster)
+    tieFighterSound.preload = 'auto';
+    
+    // Add error handling
+    tieFighterSound.addEventListener('error', function(e) {
+        console.log('Error loading TIE fighter audio file:', e);
+        // Create a fallback silent audio if the file fails to load
+        tieFighterSound = new Audio();
+        tieFighterSound.volume = 0;
+    });
+    
+    // Add load event listener
+    tieFighterSound.addEventListener('canplaythrough', function() {
+        console.log('TIE fighter audio loaded successfully');
+    });
+}
+
+// Enable audio on first user interaction
+function enableAudio() {
+    if (!audioInitialized) {
+        initAudio();
+    }
+    
+    // Try to play a silent sound to enable audio context
+    if (blasterSound) {
+        blasterSound.volume = 0;
+        blasterSound.play().then(() => {
+            blasterSound.volume = 0.5; // Reset volume
+            blasterSound.pause();
+            blasterSound.currentTime = 0;
+        }).catch(e => {
+            console.log('Blaster audio enable failed:', e);
+        });
+    }
+    
+    if (tieFighterSound) {
+        tieFighterSound.volume = 0;
+        tieFighterSound.play().then(() => {
+            tieFighterSound.volume = 0.3; // Reset volume
+            tieFighterSound.pause();
+            tieFighterSound.currentTime = 0;
+        }).catch(e => {
+            console.log('TIE fighter audio enable failed:', e);
+        });
+    }
+}
+
+// Play blaster sound
+function playPewSound() {
+    if (!blasterSound) {
+        initAudio();
+        return;
+    }
+    
+    try {
+        // Reset audio to beginning and play
+        blasterSound.currentTime = 0;
+        blasterSound.play().catch(function(error) {
+            console.log('Error playing blaster audio:', error);
+        });
+    } catch (e) {
+        console.log('Error playing blaster sound:', e);
+    }
+}
+
+// Play TIE fighter sound
+function playTieFighterSound() {
+    if (!tieFighterSound) {
+        initAudio();
+        return;
+    }
+    
+    try {
+        // Reset audio to beginning and play
+        tieFighterSound.currentTime = 0;
+        tieFighterSound.play().catch(function(error) {
+            console.log('Error playing TIE fighter audio:', error);
+        });
+    } catch (e) {
+        console.log('Error playing TIE fighter sound:', e);
+    }
+}
+
 const player = {
     x: canvas.width / 2 - 20,
     y: canvas.height - 60,
@@ -132,6 +256,7 @@ function startLevel(level) {
     
     enableAutoFire(); // Enable auto-fire for mobile
     autoFireTimer = 0;
+    enableAudio(); // Enable audio on user interaction
     
     scoreElement.textContent = score;
     livesElement.textContent = lives;
@@ -623,6 +748,7 @@ function updateEnemies() {
                     x: enemy.x + enemy.width / 2 - bulletWidth / 2,
                     y: enemy.y + enemy.height
                 });
+                playTieFighterSound(); // Play TIE fighter blaster sound
             }
         }
     });
@@ -668,6 +794,7 @@ function updateBoss() {
             y: boss.y + boss.height / 2
         });
         
+        playTieFighterSound(); // Play TIE fighter blaster sound for boss
         boss.shootTimer = 0;
     }
     
@@ -681,6 +808,7 @@ function updateBoss() {
                 y: boss.y + boss.height
             });
         }
+        playTieFighterSound(); // Play TIE fighter blaster sound for special attack
         boss.specialAttackTimer = 0;
     }
 }
@@ -1167,6 +1295,7 @@ function shoot() {
         x: player.x + player.width / 2 - bulletWidth / 2,
         y: player.y
     });
+    playPewSound();
 }
 
 document.addEventListener('keydown', (e) => {
@@ -1214,6 +1343,7 @@ function startGame() {
 
     enableAutoFire(); // Enable auto-fire for mobile
     autoFireTimer = 0;
+    enableAudio(); // Enable audio on user interaction
 
     scoreElement.textContent = score;
     livesElement.textContent = lives;
