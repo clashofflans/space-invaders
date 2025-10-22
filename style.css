@@ -100,6 +100,125 @@ button:active {
     transform: scale(0.95);
 }
 
+.modeButton {
+    background: #4ecca3;
+    color: #1a1a2e;
+    border: none;
+    padding: 15px 25px;
+    font-size: 1.2em;
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    border-radius: 8px;
+    margin: 10px;
+    transition: 0.3s;
+    min-width: 200px;
+}
+
+.modeButton:hover {
+    background: #5fddb4;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(78, 204, 163, 0.3);
+}
+
+.modeButton:active {
+    transform: scale(0.95);
+}
+
+#modeSelection {
+    margin: 20px 0;
+}
+
+#modeSelection h3 {
+    color: #4ecca3;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+
+#levelSelection h3 {
+    color: #4ecca3;
+    margin-bottom: 20px;
+    font-size: 1.3em;
+}
+
+.level-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.levelButton {
+    background: #4ecca3;
+    color: #1a1a2e;
+    border: none;
+    padding: 12px 8px;
+    font-size: 0.9em;
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+    min-height: 50px;
+}
+
+.levelButton:hover {
+    background: #5fddb4;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(78, 204, 163, 0.3);
+}
+
+.levelButton:active {
+    transform: scale(0.95);
+}
+
+.boss-level {
+    background: #ff6b35 !important;
+    color: #fff !important;
+    font-weight: bold;
+}
+
+.boss-level:hover {
+    background: #ff8c42 !important;
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+}
+
+.final-boss {
+    background: #ff0000 !important;
+    color: #fff !important;
+    font-weight: bold;
+    animation: pulse 2s infinite;
+}
+
+.final-boss:hover {
+    background: #ff3333 !important;
+    box-shadow: 0 4px 12px rgba(255, 0, 0, 0.5);
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.backButton {
+    background: #666;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.backButton:hover {
+    background: #777;
+    transform: scale(1.05);
+}
+
 #gameOver {
     position: absolute;
     top: 50%;

@@ -12,13 +12,45 @@
             <h1>Space Invaders</h1>
             <div class="score-container">
                 <span>Score: <span id="score">0</span></span>
-                <span>Lives: <span id="lives">3</span></span>
+                <span>Lives: <span id="lives">5</span></span>
+                <span id="levelDisplay" style="display:none">Level: <span id="currentLevel">1</span>/<span id="maxLevel">20</span></span>
             </div>
         </div>
         <canvas id="gameCanvas" width="800" height="600"></canvas>
         <div class="controls">
             <p>Use arrow keys to move, space to shoot</p>
-            <button id="startButton">Start Game</button>
+            <div id="modeSelection">
+                <h3>Choose Game Mode:</h3>
+                <button id="infiniteMode" class="modeButton">Infinite Mode</button>
+                <button id="campaignMode" class="modeButton">Campaign Mode (20 Levels)</button>
+            </div>
+            <div id="levelSelection" style="display:none">
+                <h3>Select Level:</h3>
+                <div class="level-grid">
+                    <button class="levelButton" data-level="1">Level 1</button>
+                    <button class="levelButton" data-level="2">Level 2</button>
+                    <button class="levelButton" data-level="3">Level 3</button>
+                    <button class="levelButton" data-level="4">Level 4</button>
+                    <button class="levelButton boss-level" data-level="5">Level 5 (Boss)</button>
+                    <button class="levelButton" data-level="6">Level 6</button>
+                    <button class="levelButton" data-level="7">Level 7</button>
+                    <button class="levelButton" data-level="8">Level 8</button>
+                    <button class="levelButton" data-level="9">Level 9</button>
+                    <button class="levelButton boss-level" data-level="10">Level 10 (Boss)</button>
+                    <button class="levelButton" data-level="11">Level 11</button>
+                    <button class="levelButton" data-level="12">Level 12</button>
+                    <button class="levelButton" data-level="13">Level 13</button>
+                    <button class="levelButton" data-level="14">Level 14</button>
+                    <button class="levelButton boss-level" data-level="15">Level 15 (Boss)</button>
+                    <button class="levelButton" data-level="16">Level 16</button>
+                    <button class="levelButton" data-level="17">Level 17</button>
+                    <button class="levelButton" data-level="18">Level 18</button>
+                    <button class="levelButton" data-level="19">Level 19</button>
+                    <button class="levelButton final-boss" data-level="20">Level 20 (Final Boss)</button>
+                </div>
+                <button id="backToModes" class="backButton">Back to Modes</button>
+            </div>
+            <button id="startButton" style="display:none">Start Game</button>
             <button id="restartButton" style="display:none">Restart</button>
         </div>
         <div id="gameOver" style="display:none">
