@@ -232,11 +232,11 @@ function initializeGameMode() {
             startLevel(parseInt(levelParam));
         } else {
             // No level specified, redirect to menu
-            window.location.href = 'menu.html';
+            window.location.href = 'index.html';
         }
     } else {
         // No valid mode, redirect to menu
-        window.location.href = 'menu.html';
+        window.location.href = 'index.html';
     }
 }
 
@@ -1355,7 +1355,7 @@ function startGame() {
 
 restartButton.addEventListener('click', startGame);
 backToMenuButton.addEventListener('click', () => {
-    window.location.href = 'menu.html';
+    window.location.href = 'index.html';
 });
 
 // Mobile touch/swipe controls

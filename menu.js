@@ -10,7 +10,7 @@ let selectedGameMode = null;
 function selectInfiniteMode() {
     selectedGameMode = 'infinite';
     // Redirect to game page with infinite mode
-    window.location.href = 'index.html?mode=infinite';
+    window.location.href = 'game.html?mode=infinite';
 }
 
 // Select campaign mode
@@ -30,7 +30,7 @@ function showModeSelection() {
 // Start level
 function startLevel(level) {
     // Redirect to game page with campaign mode and level
-    window.location.href = `index.html?mode=campaign&level=${level}`;
+    window.location.href = `game.html?mode=campaign&level=${level}`;
 }
 
 // Event listeners

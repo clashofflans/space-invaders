@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Space Invaders">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <title>Space Invaders</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <h1>Space Invaders</h1>
+            <div class="score-container">
+                <span>Score: <span id="score">0</span></span>
+                <span>Lives: <span id="lives">5</span></span>
+                <span id="levelDisplay" style="display:none">Level: <span id="currentLevel">1</span>/<span id="maxLevel">20</span></span>
+            </div>
+        </div>
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        
+        <!-- Mobile Touch Controls -->
+        <div id="mobileControls" class="mobile-controls">
+            <div id="touchArea" class="touch-area">
+                <div class="touch-instructions">
+                    <p>Swipe left/right to move</p>
+                    <p>(Auto-fire enabled)</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button id="backToMenu" class="backButton">Back to Menu</button>
+            <p class="desktop-text">Use arrow keys to move, space to shoot</p>
+            <button id="restartButton" style="display:none">Restart</button>
+        </div>
+        <div id="gameOver" style="display:none">
+            <h2>Game Over!</h2>
+            <p>Final Score: <span id="finalScore">0</span></p>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
