@@ -39,6 +39,7 @@ let autoFireTimer = 0;
 let touchStartX = 0;
 let touchStartY = 0;
 let isTouching = false;
+let showStartMessage = false;
 
 // Audio for sound effects
 let blasterSound;
@@ -223,12 +224,16 @@ function selectInfiniteMode() {
     modeSelection.style.display = 'none';
     startButton.style.display = 'inline-block';
     levelDisplay.style.display = 'none';
+    showStartMessage = true;
+    drawStartMessage();
 }
 
 function selectCampaignMode() {
     gameMode = 'campaign';
     modeSelection.style.display = 'none';
     levelSelection.style.display = 'block';
+    showStartMessage = true;
+    drawStartMessage();
 }
 
 function showLevelSelection() {
@@ -239,6 +244,7 @@ function showLevelSelection() {
 function showModeSelection() {
     levelSelection.style.display = 'none';
     modeSelection.style.display = 'block';
+    showStartMessage = false;
 }
 
 function startLevel(level) {
@@ -250,6 +256,7 @@ function startLevel(level) {
     bullets = [];
     enemyBullets = [];
     player.x = canvas.width / 2 - 20;
+    showStartMessage = false; // Hide start message when game starts
     
     updateDifficulty();
     updateLevelDisplay();
@@ -1006,6 +1013,15 @@ function drawStars() {
     }
 }
 
+function drawStartMessage() {
+    if (!showStartMessage) return;
+    
+    ctx.fillStyle = '#00ff00';
+    ctx.font = '30px Courier New';
+    ctx.textAlign = 'center';
+    ctx.fillText('Press Start Game to Play!', canvas.width / 2, canvas.height / 2);
+}
+
 function drawDeathStar() {
     // Death Star position and size (moved to top)
     const centerX = canvas.width / 2;
@@ -1334,6 +1350,7 @@ function startGame() {
     bullets = [];
     enemyBullets = [];
     player.x = canvas.width / 2 - 20;
+    showStartMessage = false; // Hide start message when game starts
     
     if (gameMode === 'campaign') {
         currentLevel = 1;
@@ -1449,7 +1466,4 @@ if (touchArea) {
 clear();
 drawStars();
 drawDeathStar();
-ctx.fillStyle = '#00ff00';
-ctx.font = '30px Courier New';
-ctx.textAlign = 'center';
-ctx.fillText('Press Start to Begin!', canvas.width / 2, canvas.height / 2);
+drawStartMessage();

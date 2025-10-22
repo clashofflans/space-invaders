@@ -348,6 +348,28 @@ button:active {
     .mobile-text {
         display: block;
     }
+    
+    /* Make mode buttons side by side on mobile */
+    #modeSelection {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    
+    #modeSelection h3 {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+    
+    .modeButton {
+        flex: 1;
+        min-width: 140px;
+        max-width: 180px;
+        margin: 5px;
+    }
 }
 
 @media (min-width: 769px) {
@@ -367,14 +389,24 @@ button:active {
 /* Mobile-specific button sizing */
 @media (max-width: 480px) {
     .modeButton, .levelButton {
-        padding: 15px 20px;
-        font-size: 1.1em;
-        min-width: 150px;
+        padding: 12px 15px;
+        font-size: 1em;
+        min-width: 120px;
+        max-width: 160px;
     }
     
     .level-grid {
         grid-template-columns: repeat(3, 1fr);
         gap: 8px;
+    }
+    
+    /* Ensure mode buttons stay side by side on very small screens */
+    #modeSelection {
+        gap: 8px;
+    }
+    
+    .modeButton {
+        margin: 3px;
     }
     
     .touch-area {
