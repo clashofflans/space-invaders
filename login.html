@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Invaders - Login</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #0f0;
+            border-radius: 10px;
+            padding: 40px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .login-title {
+            color: #0f0;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #0f0;
+        }
+
+        .login-subtitle {
+            color: #0f0;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            opacity: 0.8;
+        }
+
+        .login-btn {
+            background: linear-gradient(180deg, #0f0, #0a0);
+            border: 2px solid #0f0;
+            border-radius: 5px;
+            color: #000;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 15px 40px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+
+        .login-btn:hover {
+            background: linear-gradient(180deg, #0f0, #0f0);
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.6);
+            transform: scale(1.05);
+        }
+
+        .login-btn:active {
+            transform: scale(0.98);
+        }
+
+        .login-info {
+            color: #0f0;
+            font-size: 0.9em;
+            margin-top: 20px;
+            opacity: 0.7;
+        }
+
+        .wildcard-badge {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 255, 0, 0.3);
+        }
+
+        .wildcard-badge p {
+            color: #0f0;
+            font-size: 0.8em;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h1 class="login-title">SPACE INVADERS</h1>
+            <p class="login-subtitle">Secure Login Required</p>
+
+            <a href="/auth/login" class="login-btn">
+                Login with Wildcard.id
+            </a>
+
+            <p class="login-info">
+                Sign in to save your progress and compete on the leaderboard
+            </p>
+
+            <div class="wildcard-badge">
+                <p>Powered by Wildcard.id OAuth</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add starfield background effect
+        document.addEventListener('DOMContentLoaded', function() {
+            const body = document.body;
+
+            // Create stars
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.cssText = `
+                    position: fixed;
+                    width: 2px;
+                    height: 2px;
+                    background: white;
+                    border-radius: 50%;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    opacity: ${Math.random() * 0.5 + 0.3};
+                    animation: twinkle ${Math.random() * 3 + 2}s infinite;
+                `;
+                body.appendChild(star);
+            }
+        });
+    </script>
+</body>
+</html>
