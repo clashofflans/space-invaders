@@ -45,6 +45,13 @@
             <p>Final Score: <span id="finalScore">0</span></p>
         </div>
     </div>
+    <script src="auth.js"></script>
+    <script>
+        // Check authentication before loading game
+        if (!WildcardAuth.isAuthenticated()) {
+            window.location.href = 'login.html';
+        }
+    </script>
     <script src="game.js"></script>
 </body>
 </html>
