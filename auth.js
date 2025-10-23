@@ -9,7 +9,7 @@ const WildcardAuth = {
         clientId: 'IkR0HxWPLCSQqu8uj3x6QfuH7nQUqpyZJewRx_ECYuQMtGaRPG1Y15OhhAaYxBbaGBmhdmsNM8ZAQV4AqKtPVQ',
         authorizationEndpoint: 'https://wildcard.id/oauth/authorize',
         tokenEndpoint: 'https://wildcard.id/oauth/token',
-        redirectUri: 'https://clashofflans.github.io/space-invaders/callback.html',
+        redirectUri: 'https://kianbusby.github.io/space-invaders/callback.html',
         scope: 'openid profile',
     },
 

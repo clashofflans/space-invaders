@@ -2,7 +2,7 @@
 
 A classic Space Invaders game with OAuth authentication via Wildcard.id. This is a static web application hosted on GitHub Pages.
 
-🎮 **Play Now:** [https://clashofflans.github.io/space-invaders](https://clashofflans.github.io/space-invaders)
+🎮 **Play Now:** [https://kianbusby.github.io/space-invaders](https://kianbusby.github.io/space-invaders)
 
 ## Features
 
@@ -66,7 +66,7 @@ The application uses Wildcard.id OAuth for authentication:
 - **Client ID:** `IkR0HxWPLCSQqu8uj3x6QfuH7nQUqpyZJewRx_ECYuQMtGaRPG1Y15OhhAaYxBbaGBmhdmsNM8ZAQV4AqKtPVQ`
 - **Authorization Endpoint:** `https://wildcard.id/oauth/authorize`
 - **Token Endpoint:** `https://wildcard.id/oauth/token`
-- **Callback URL:** `https://clashofflans.github.io/space-invaders/callback.html`
+- **Callback URL:** `https://kianbusby.github.io/space-invaders/callback.html`
 - **Scopes:** `openid profile`
 
 ### Authentication Flow
