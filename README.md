@@ -1,26 +1,38 @@
 # Space Invaders (Space Vader)
 
-A classic Space Invaders game with OAuth authentication via Wildcard.id.
+A classic Space Invaders game with OAuth authentication via Wildcard.id. This is a static web application hosted on GitHub Pages.
+
+🎮 **Play Now:** [https://clashofflans.github.io/space-invaders](https://clashofflans.github.io/space-invaders)
 
 ## Features
 
 - **Two Game Modes:**
-  - Infinite Mode: Endless waves of TIE fighters
-  - Campaign Mode: 20 levels with boss battles
+  - **Infinite Mode:** Endless waves of TIE fighters
+  - **Campaign Mode:** 20 levels with boss battles
 
-- **OAuth Authentication:** Secure login using Wildcard.id
+- **OAuth Authentication:** Secure login using Wildcard.id (client-side implementation)
 - **Mobile Support:** Touch controls with swipe detection
 - **Desktop Controls:** Keyboard controls (arrow keys, spacebar)
 - **Sound Effects:** Blaster and TIE fighter weapon sounds
+- **Static Hosting:** Runs entirely client-side, no server required
+
+## How It Works
+
+This application implements OAuth 2.0 authentication entirely on the client-side using:
+- **PKCE (Proof Key for Code Exchange)** for secure authentication without a backend
+- **LocalStorage** for session management
+- **SessionStorage** for OAuth state management
 
 ## Setup Instructions
 
-### Prerequisites
+### For GitHub Pages Deployment
 
-- Node.js (v14 or higher)
-- npm or yarn
+1. Fork or clone this repository
+2. Enable GitHub Pages in repository settings
+3. Set the source to the main branch
+4. Your game will be available at `https://[username].github.io/[repo-name]`
 
-### Installation
+### For Local Development
 
 1. Clone the repository:
    ```bash
@@ -28,48 +40,44 @@ A classic Space Invaders game with OAuth authentication via Wildcard.id.
    cd space-invaders
    ```
 
-2. Install dependencies:
+2. Serve the files using any static web server:
    ```bash
-   npm install
+   # Using Python 3
+   python3 -m http.server 8000
+
+   # Using PHP
+   php -S localhost:8000
+
+   # Using Node.js http-server
+   npx http-server -p 8000
    ```
 
-3. Configure environment variables:
-   - Copy `.env.example` to `.env`
-   - Update the values in `.env` if needed:
-     ```
-     CLIENT_ID=your-wildcard-client-id
-     REDIRECT_URI=http://localhost:3000/auth/callback
-     BASE_URL=http://localhost:3000
-     SESSION_SECRET=your-random-secret-key
-     PORT=3000
-     ```
-
-4. Start the server:
-   ```bash
-   npm start
+3. Open your browser and navigate to:
+   ```
+   http://localhost:8000
    ```
 
-5. Open your browser and navigate to:
-   ```
-   http://localhost:3000
-   ```
-
-### Development Mode
-
-For development with auto-restart on file changes:
-
-```bash
-npm run dev
-```
+**Note:** For local development with OAuth, you'll need to configure a development redirect URI in your Wildcard.id OAuth application settings.
 
 ## OAuth Configuration
 
 The application uses Wildcard.id OAuth for authentication:
 
+- **Client ID:** `IkR0HxWPLCSQqu8uj3x6QfuH7nQUqpyZJewRx_ECYuQMtGaRPG1Y15OhhAaYxBbaGBmhdmsNM8ZAQV4AqKtPVQ`
 - **Authorization Endpoint:** `https://wildcard.id/oauth/authorize`
 - **Token Endpoint:** `https://wildcard.id/oauth/token`
-- **Callback URL:** `/auth/callback`
+- **Callback URL:** `https://clashofflans.github.io/space-invaders/callback.html`
 - **Scopes:** `openid profile`
+
+### Authentication Flow
+
+1. User visits the app and is redirected to login page
+2. User clicks "Login with Wildcard.id"
+3. Browser redirects to Wildcard.id authorization endpoint with PKCE parameters
+4. After successful authentication, user is redirected to `callback.html`
+5. Client-side JavaScript exchanges authorization code for tokens
+6. User session is stored in localStorage
+7. User is redirected to game menu
 
 ## Game Controls
 
@@ -85,39 +93,68 @@ The application uses Wildcard.id OAuth for authentication:
 
 ```
 space-invaders/
-├── server.js          # Express server with OAuth implementation
-├── index.html         # Main menu page
-├── game.html          # Game canvas page
+├── index.html         # Main menu page (protected)
+├── game.html          # Game canvas page (protected)
 ├── login.html         # Login page
+├── callback.html      # OAuth callback handler
+├── auth.js            # Client-side OAuth library
 ├── menu.js            # Menu logic
 ├── game.js            # Game logic
 ├── style.css          # Styling
-├── package.json       # Node.js dependencies
-├── .env               # Environment variables (not committed)
-└── .env.example       # Example environment configuration
+└── README.md          # Documentation
 ```
 
-## Authentication Flow
+## Security Considerations
 
-1. User visits the app and is redirected to login page
-2. User clicks "Login with Wildcard.id"
-3. User is redirected to Wildcard.id authorization endpoint
-4. After successful authentication, user is redirected back to `/auth/callback`
-5. Server exchanges authorization code for tokens
-6. User session is created and user is redirected to game menu
-7. User can play the game and logout when done
+- **PKCE:** Uses PKCE flow to secure OAuth without a client secret
+- **State Parameter:** Validates OAuth state to prevent CSRF attacks
+- **Token Storage:** Access tokens are stored in localStorage (limited lifetime)
+- **Client-Side Only:** No sensitive credentials are stored in the code
 
-## API Endpoints
+## Browser Compatibility
 
-- `GET /` - Home page (redirects to login if not authenticated)
-- `GET /login` - Login page
-- `GET /auth/login` - Initiate OAuth flow
-- `GET /auth/callback` - OAuth callback handler
-- `GET /auth/logout` - Logout and destroy session
-- `GET /api/user` - Get current user info (JSON)
-- `GET /game.html` - Game page (protected)
-- `GET /index.html` - Menu page (protected)
+- Modern browsers with support for:
+  - Web Crypto API (for PKCE)
+  - LocalStorage and SessionStorage
+  - Canvas API
+  - HTML5 Audio
+
+## Development
+
+### File Structure
+
+- **auth.js**: Handles all OAuth operations including:
+  - PKCE code generation
+  - Authorization URL construction
+  - Token exchange
+  - Session management
+
+- **callback.html**: Receives OAuth callback and processes authentication
+
+- **Protected Pages**: index.html and game.html require authentication
+
+### Customization
+
+To use this with your own OAuth provider:
+
+1. Update the configuration in `auth.js`:
+   ```javascript
+   config: {
+       clientId: 'your-client-id',
+       authorizationEndpoint: 'https://your-provider/oauth/authorize',
+       tokenEndpoint: 'https://your-provider/oauth/token',
+       redirectUri: 'https://your-domain/callback.html',
+       scope: 'openid profile',
+   }
+   ```
+
+2. Update the redirect URI in your OAuth application settings
 
 ## License
 
 ISC
+
+## Credits
+
+- OAuth integration powered by Wildcard.id
+- Game inspired by the classic Space Invaders arcade game

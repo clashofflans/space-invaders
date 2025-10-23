@@ -52,6 +52,7 @@
             display: inline-block;
             transition: all 0.3s ease;
             box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+            font-family: 'Courier New', monospace;
         }
 
         .login-btn:hover {
@@ -90,9 +91,9 @@
             <h1 class="login-title">SPACE INVADERS</h1>
             <p class="login-subtitle">Secure Login Required</p>
 
-            <a href="/auth/login" class="login-btn">
+            <button onclick="WildcardAuth.login()" class="login-btn">
                 Login with Wildcard.id
-            </a>
+            </button>
 
             <p class="login-info">
                 Sign in to save your progress and compete on the leaderboard
@@ -104,7 +105,13 @@
         </div>
     </div>
 
+    <script src="auth.js"></script>
     <script>
+        // Check if already authenticated
+        if (WildcardAuth.isAuthenticated()) {
+            window.location.href = 'index.html';
+        }
+
         // Add starfield background effect
         document.addEventListener('DOMContentLoaded', function() {
             const body = document.body;

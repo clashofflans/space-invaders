@@ -17,7 +17,7 @@
     <div class="menu-container">
         <div class="user-info" id="userInfo">
             <span id="userName">Loading...</span>
-            <a href="/auth/logout" class="logout-btn">Logout</a>
+            <button onclick="WildcardAuth.logout()" class="logout-btn">Logout</button>
         </div>
 
         <div class="menu-header">
@@ -71,22 +71,16 @@
         </div>
     </div>
     
+    <script src="auth.js"></script>
     <script src="menu.js"></script>
     <script>
-        // Fetch and display user info
-        fetch('/api/user')
-            .then(response => response.json())
-            .then(data => {
-                if (data.authenticated && data.user) {
-                    document.getElementById('userName').textContent = 'Welcome, ' + data.user.name;
-                } else {
-                    window.location.href = '/login';
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching user info:', error);
-                document.getElementById('userName').textContent = 'Error loading user';
-            });
+        // Check authentication and display user info
+        const user = WildcardAuth.getUser();
+        if (user) {
+            document.getElementById('userName').textContent = 'Welcome, ' + user.name;
+        } else {
+            window.location.href = 'login.html';
+        }
     </script>
 </body>
 </html>
