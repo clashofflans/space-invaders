@@ -6,7 +6,7 @@
 const WildcardAuth = {
     // Configuration
     config: {
-        clientId: 'IkR0HxWPLCSQqu8uj3x6QfuH7nQUqpyZJewRx_ECYuQMtGaRPG1Y15OhhAaYxBbaGBmhdmsNM8ZAQV4AqKtPVQ',
+        clientId: 'fb066c1f-d6e9-45ec-a875-9703e58c7376',
         authorizationEndpoint: 'https://wildcard.id/oauth/authorize',
         tokenEndpoint: 'https://wildcard.id/oauth/token',
         redirectUri: 'https://kianbusby.github.io/space-invaders/callback.html',

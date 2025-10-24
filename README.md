@@ -63,7 +63,7 @@ This application implements OAuth 2.0 authentication entirely on the client-side
 
 The application uses Wildcard.id OAuth for authentication:
 
-- **Client ID:** `IkR0HxWPLCSQqu8uj3x6QfuH7nQUqpyZJewRx_ECYuQMtGaRPG1Y15OhhAaYxBbaGBmhdmsNM8ZAQV4AqKtPVQ`
+- **Client ID:** `fb066c1f-d6e9-45ec-a875-9703e58c7376`
 - **Authorization Endpoint:** `https://wildcard.id/oauth/authorize`
 - **Token Endpoint:** `https://wildcard.id/oauth/token`
 - **Callback URL:** `https://kianbusby.github.io/space-invaders/callback.html`
