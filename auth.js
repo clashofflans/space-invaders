@@ -10,7 +10,7 @@ const WildcardAuth = {
         authorizationEndpoint: 'https://wildcard.id/oauth/authorize',
         tokenEndpoint: 'https://wildcard.id/oauth/token',
         redirectUri: 'https://kianbusby.github.io/space-invaders/callback.html',
-        scope: 'openid profile',
+        scope: 'openid',
     },
 
     // Generate random string for PKCE
